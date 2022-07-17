@@ -10,7 +10,7 @@ public class SwipeController : MonoBehaviour
     public static Action OnLeftSwipe;
 
 
-    [SerializeField] private Transform trailObj;
+    [SerializeField] private Transform bladeObj;
     [SerializeField] private Blade blade;
 
     private Vector3 touchStartPos = Vector3.zero;
@@ -55,6 +55,7 @@ public class SwipeController : MonoBehaviour
             this.touchStartPos = Input.mousePosition;
             blade.MakeTrailEffectOnOrOff(true);
             blade.MakeColliderOnOrOff(true);
+            blade.MakeWeaponGfxOnOrOff(true);
             isSlicing = true;
 
             Quaternion rotation = Quaternion.LookRotation(-transform.forward, Input.mousePosition.normalized);
@@ -66,44 +67,55 @@ public class SwipeController : MonoBehaviour
         {
             blade.MakeTrailEffectOnOrOff(false);
             blade.MakeColliderOnOrOff(false);
+            blade.MakeWeaponGfxOnOrOff(false);
             isSlicing = false;
 
-            float dirX = Input.mousePosition.x - touchStartPos.x;
-            SetAngle(Input.mousePosition, dirX);
+            // float dirX = Input.mousePosition.x - touchStartPos.x;
+            // SetAngle(Input.mousePosition, dirX);
         }
 
         if (isSlicing)
         {
             float dirX = Input.mousePosition.x - touchStartPos.x;
             SetAngle(Input.mousePosition, dirX);
-            blade.SetTrailPos(this.transform.position);
+            blade.SetTrailPos();
 
             Quaternion rotation = Quaternion.LookRotation(-transform.forward, (Input.mousePosition - touchStartPos).normalized);
-
             blade.transform.rotation = Quaternion.Slerp(blade.transform.rotation, rotation, 100 * Time.deltaTime);
         }
     }
 
-    private void SetAngle(Vector3 currentTouchPos, float direction)
+    private void SetAngle(Vector3 currentTouchPos, float directionX)
     {
 
-        float yAngle = Vector3.Angle(Vector3.down, touchStartPos - currentTouchPos);
+        // float yAngle = Vector3.Angle(Vector3.down, touchStartPos - currentTouchPos);
 
-        if (direction > 0)
-        {
-            blade.SetAngle(yAngle);
-        }
+        // if (directionX > 0)
+        // {
+        //     blade.SetAngle(yAngle);
+        // }
+
+        // else
+        // {
+        //     blade.SetAngle(-yAngle);
+        // }
+
+        Vector2 direction = currentTouchPos - touchStartPos;
+        //Debug.LogError("direction: " + direction);
+
+        Vector2 normalised = direction.normalized;
+        //Debug.LogError("normalised: " + normalised);
+
+        float angleBetween = Vector2.Angle(Vector2.up, direction);
+        // Debug.LogError("angleBetween: " + angleBetween);
+
+        if (normalised.x > 0)
+            blade.SetAngle(angleBetween);
 
         else
-        {
-            blade.SetAngle(-yAngle);
-        }
-
-        // Debug.Log(direction);
+            blade.SetAngle(-angleBetween);
 
 
-
-        //Debug.Log("Y Angle: " + yAngle);
     }
 
 

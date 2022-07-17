@@ -72,13 +72,13 @@ public class Bullet : MonoBehaviour, IDeflectable
     {
         float distanceZ = Mathf.Abs(this.transform.position.z - playerPos.z);
 
-        if (distanceZ <= 4.8f && distanceZ >= 3.5f && !isDeflecting)
+        if (distanceZ <= 3.6f && distanceZ >= 2.2f && !isDeflecting)
         {
             currentBulletSpeed = bulletSpeedSlow;
             mesh.material.color = Color.red;
         }
 
-        else if (isDeflecting || (distanceZ > 4.8f || distanceZ < 3.5f))
+        else if (isDeflecting || (distanceZ > 3.6f || distanceZ < 2.2f))
         {
             currentBulletSpeed = bulletSpeedNormal;
             mesh.material.color = new Color(0.9245283f, 0.7159268f, 0.1788003f, 1);
@@ -133,6 +133,8 @@ public class Bullet : MonoBehaviour, IDeflectable
 
         currentBulletSpeed = bulletSpeedDeflect;
         mesh.material.color = new Color(0.9245283f, 0.7159268f, 0.1788003f, 1);
-        this.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, angle, 0f), 1000 * Time.deltaTime);
+        // this.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, angle, 0f), 1000 * Time.deltaTime);
+
+        transform.eulerAngles = new Vector3(0, angle, 0);
     }
 }

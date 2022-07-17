@@ -8,6 +8,8 @@ public class EnemyMoving : Enemy
 
     private int nextPoint = 0;
     private float currentTime = 0f;
+
+    private bool canShootWhileWaiting = true;
     protected override void CheckState()
     {
         switch (currentState)
@@ -18,9 +20,13 @@ public class EnemyMoving : Enemy
 
                 if (currentTime >= Random.Range(0.5f, 1.5f))
                 {
+                    currentTime = 0f;
+                    this.randomPlayerPos = new Vector3(Random.Range(target.x - enemyData.playerXBound, target.x + enemyData.playerXBound),
+                                            Random.Range(target.y - (enemyData.playerYBound - 0.3f), target.y + enemyData.playerYBound), target.z);
+
+                    transform.rotation = Quaternion.LookRotation(randomPlayerPos - transform.position);
                     Shoot();
                     currentState = EnemyState.Moving;
-                    currentTime = 0f;
                 }
 
                 break;
@@ -28,9 +34,17 @@ public class EnemyMoving : Enemy
             case EnemyState.Idle:
                 currentTime += Time.deltaTime;
 
-                if (currentTime >= Random.Range(1f, enemyData.movingTime))
+                if (currentTime >= enemyData.movingTime / 2 && canShootWhileWaiting)
+                {
+                    RotateGun();
+                    canShootWhileWaiting = false;
+                }
+
+
+                if (currentTime >= enemyData.movingTime)
                 {
                     currentTime = 0f;
+                    canShootWhileWaiting = true;
                     currentState = EnemyState.Moving;
                 }
 
@@ -42,11 +56,8 @@ public class EnemyMoving : Enemy
 
             case EnemyState.Shoot:
 
-                Shoot();
-
+                RotateGun();
                 currentState = EnemyState.Idle;
-
-
                 break;
 
             case EnemyState.Dead:
@@ -83,5 +94,42 @@ public class EnemyMoving : Enemy
 
             instantiatedHealthBar.transform.position = healthBarPos;
         }
+    }
+
+    protected override void RotateGun()
+    {
+        StartCoroutine(RotateEnemy());
+    }
+
+    private IEnumerator RotateEnemy()
+    {
+        WaitForSeconds delay = new WaitForSeconds(0.01f);
+
+
+        this.randomPlayerPos = new Vector3(Random.Range(target.x - enemyData.playerXBound, target.x + enemyData.playerXBound),
+        Random.Range(target.y - (enemyData.playerYBound - 0.3f), target.y + enemyData.playerYBound), target.z);
+
+        Quaternion targetRotation = Quaternion.LookRotation(randomPlayerPos - transform.position);
+
+        while (transform.rotation != targetRotation)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10 * Time.deltaTime);
+            yield return delay;
+        }
+
+        Shoot();
+    }
+
+    protected override void InstantiateHealthBar()
+    {
+        if (levelController.GetGameStartState() == false)
+            return;
+
+        GameObject obj = Instantiate(enemyData.healthBarPrefab, new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z),
+        Quaternion.identity, healthBarParentCanvas);
+
+        instantiatedHealthBar = obj.GetComponent<EnemyHealthBar>();
+        currentHealth = enemyData.maxHealth;
+        instantiatedHealthBar.SetMaxHealth(enemyData.maxHealth);
     }
 }

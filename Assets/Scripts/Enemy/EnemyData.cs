@@ -10,13 +10,15 @@ public class EnemyData : ScriptableObject
     public float playerXBound;
     public GameObject bulletPrefab;
     public GameObject healthBarPrefab;
+    public int maxHealth;
+
+    [Header("Data For Static Enemies: ")]
     public float shootDelayMin;
     public float shootDelayMax;
-    public int maxHealth;
 
     [Header("Data For Moving Enemies: ")]
     public int movingSpeed;
-    public int movingTime;
+    public float movingTime;
 }
 
 public enum EnemyType

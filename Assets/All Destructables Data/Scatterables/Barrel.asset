@@ -17,5 +17,5 @@ MonoBehaviour:
   damageDeal: 0
   chainHitForce: 0
   insideMaterial: {fileID: 2100000, guid: 901786ccfba45453a979371bbcf14a54, type: 2}
-  totalCuts: 3
-  shatterForce: 1
+  totalCuts: 4
+  shatterForce: 180

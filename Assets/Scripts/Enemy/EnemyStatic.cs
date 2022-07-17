@@ -37,6 +37,7 @@ public class EnemyStatic : Enemy
 
             case EnemyState.Shoot:
 
+                RotateGun();
                 Shoot();
 
                 currentState = EnemyState.Idle;
@@ -49,4 +50,27 @@ public class EnemyStatic : Enemy
                 break;
         }
     }
+
+    protected override void RotateGun()
+    {
+        this.randomPlayerPos = new Vector3(Random.Range(target.x - enemyData.playerXBound, target.x + enemyData.playerXBound),
+        Random.Range(target.y - (enemyData.playerYBound - 0.3f), target.y + enemyData.playerYBound), target.z);
+
+        gun.rotation = Quaternion.LookRotation(randomPlayerPos - gun.position);
+    }
+
+    protected override void InstantiateHealthBar()
+    {
+        if (levelController.GetGameStartState() == false)
+            return;
+
+        GameObject obj = Instantiate(enemyData.healthBarPrefab, new Vector3(transform.position.x, transform.position.y + 2f, transform.position.z),
+        Quaternion.identity, healthBarParentCanvas);
+
+        instantiatedHealthBar = obj.GetComponent<EnemyHealthBar>();
+        currentHealth = enemyData.maxHealth;
+        instantiatedHealthBar.SetMaxHealth(enemyData.maxHealth);
+    }
+
+
 }

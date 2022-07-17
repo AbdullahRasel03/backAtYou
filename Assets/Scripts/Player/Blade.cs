@@ -17,11 +17,10 @@ public class Blade : MonoBehaviour
     }
 
 
-    internal void SetTrailPos(Vector3 playerPos)
+    internal void SetTrailPos()
     {
-        playerPos = this.transform.position;
         Vector3 mousePos = Input.mousePosition;
-        this.transform.position = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 3.99f));
+        this.transform.position = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 2.49f));
     }
 
     internal void MakeTrailEffectOnOrOff(bool val)
@@ -42,6 +41,16 @@ public class Blade : MonoBehaviour
     internal void SetAngle(float val)
     {
         angleYAxis = val;
+
+        // if (angleYAxis > 0)
+        // {
+        //     weaponsGfx.transform.localEulerAngles = new Vector3(0, 15, 0);
+        // }
+
+        // else
+        // {
+        //     weaponsGfx.transform.localEulerAngles = new Vector3(0, -15, 0);
+        // }
     }
 
     void OnTriggerEnter(Collider other)

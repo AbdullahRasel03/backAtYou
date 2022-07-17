@@ -66,18 +66,6 @@ public class Enemy : MonoBehaviour, IDamageable
     }
 
     #endregion
-    private void InstantiateHealthBar()
-    {
-        if (levelController.GetGameStartState() == false)
-            return;
-
-        GameObject obj = Instantiate(enemyData.healthBarPrefab, new Vector3(transform.position.x, transform.position.y + 2f, transform.position.z),
-        Quaternion.identity, healthBarParentCanvas);
-
-        instantiatedHealthBar = obj.GetComponent<EnemyHealthBar>();
-        currentHealth = enemyData.maxHealth;
-        instantiatedHealthBar.SetMaxHealth(enemyData.maxHealth);
-    }
 
     protected void GameStart()
     {
@@ -93,8 +81,6 @@ public class Enemy : MonoBehaviour, IDamageable
 
     protected void Shoot()
     {
-        RotateGun();
-
         GameObject obj = objectPool.GetObj(enemyData.bulletPrefab, null);
         obj.transform.position = shootPoint.position;
         obj.transform.rotation = shootPoint.rotation;
@@ -118,14 +104,7 @@ public class Enemy : MonoBehaviour, IDamageable
     //     }
     // }
 
-    protected void RotateGun()
-    {
-        this.randomPlayerPos = new Vector3(Random.Range(target.x - enemyData.playerXBound, target.x + enemyData.playerXBound),
-        Random.Range(target.y - (enemyData.playerYBound - 0.15f), target.y + enemyData.playerYBound), target.z);
 
-        gun.rotation = Quaternion.LookRotation(gun.position - randomPlayerPos);
-        //shootPoint.rotation = Quaternion.LookRotation(shootPoint.position - randomPlayerPos);
-    }
 
     public void Damage(int amount)
     {
@@ -140,6 +119,9 @@ public class Enemy : MonoBehaviour, IDamageable
     }
 
     protected virtual void CheckState() { }
+    protected virtual void RotateGun() { }
+
+    protected virtual void InstantiateHealthBar() { }
 }
 
 

@@ -19,8 +19,13 @@ public class Shatterables : DestructableObject, IDestructable
 
             for (int i = 0; i < pieces.Length; i++)
             {
-                pieces[i].AddComponent<Rigidbody>().ResetCenterOfMass();
+                int layerToIgnore = LayerMask.NameToLayer("Shatterables");
+                pieces[i].layer = layerToIgnore;
+
+                Rigidbody rb = pieces[i].AddComponent<Rigidbody>();
                 pieces[i].AddComponent<MeshCollider>().convex = true;
+
+                rb.AddForce(Vector3.forward * data.shatterForce * Time.fixedDeltaTime, ForceMode.Impulse);
             }
 
             genObjs--;
