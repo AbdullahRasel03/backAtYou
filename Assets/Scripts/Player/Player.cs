@@ -7,15 +7,17 @@ public class Player : MonoBehaviour, IDamageable
 {
     public static event Action OnPlayerDead;
     public static event Action<int> OnHealthChanged;
-    [SerializeField] private int playerMaxHealth;
+    [SerializeField] private PlayerData data;
+    [SerializeField] private Camera cam;
 
 
     private int currentHealth;
 
     void Start()
     {
-        currentHealth = playerMaxHealth;
+        currentHealth = data.playerMaxHealth;
     }
+
     public void Damage(int amount)
     {
         currentHealth -= amount;
@@ -30,6 +32,11 @@ public class Player : MonoBehaviour, IDamageable
 
     public int GetPlayerMaxHealth()
     {
-        return playerMaxHealth;
+        return data.playerMaxHealth;
+    }
+
+    public Camera GetFPSCam()
+    {
+        return this.cam;
     }
 }

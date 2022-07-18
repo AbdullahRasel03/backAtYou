@@ -53,8 +53,34 @@ public class EnemyStatic : Enemy
 
     protected override void RotateGun()
     {
-        this.randomPlayerPos = new Vector3(Random.Range(target.x - enemyData.playerXBound, target.x + enemyData.playerXBound),
-        Random.Range(target.y - (enemyData.playerYBound - 0.3f), target.y + enemyData.playerYBound), target.z);
+        // this.randomPlayerPos = new Vector3(Random.Range(target.x - enemyData.playerXBound, target.x + enemyData.playerXBound),
+        // Random.Range(target.y - (enemyData.playerYBound - 0.3f), target.y + enemyData.playerYBound), target.z);
+
+        Vector3 dir = (target - gun.position).normalized;
+
+        float min = 0, max = 0;
+
+        if (dir.x > 0)
+        {
+            min = target.x - 0.15f;
+            max = target.x + dir.x + 0.15f;
+        }
+
+        else if (dir.x < 0)
+        {
+            min = target.x + dir.x - 0.15f;
+            max = target.x + 0.15f;
+        }
+
+        else
+        {
+            min = target.x - 0.25f;
+            max = target.x + 0.25f;
+        }
+
+        this.randomPlayerPos = new Vector3(Random.Range(min, max), Random.Range(target.y - 0.15f, target.y - 0.7f), target.z);
+
+
 
         gun.rotation = Quaternion.LookRotation(randomPlayerPos - gun.position);
     }

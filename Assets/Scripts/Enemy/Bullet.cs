@@ -72,13 +72,13 @@ public class Bullet : MonoBehaviour, IDeflectable
     {
         float distanceZ = Mathf.Abs(this.transform.position.z - playerPos.z);
 
-        if (distanceZ <= 3.6f && distanceZ >= 2.2f && !isDeflecting)
+        if (distanceZ <= 3.25f && distanceZ >= 2.1f && !isDeflecting)
         {
             currentBulletSpeed = bulletSpeedSlow;
             mesh.material.color = Color.red;
         }
 
-        else if (isDeflecting || (distanceZ > 3.6f || distanceZ < 2.2f))
+        else if (isDeflecting || (distanceZ > 3.25f || distanceZ < 2.1f))
         {
             currentBulletSpeed = bulletSpeedNormal;
             mesh.material.color = new Color(0.9245283f, 0.7159268f, 0.1788003f, 1);
@@ -91,6 +91,7 @@ public class Bullet : MonoBehaviour, IDeflectable
         rb.velocity = Vector3.zero;
         IDamageable dmg = other.gameObject.GetComponent<IDamageable>();
         IDestructable des = other.gameObject.GetComponent<IDestructable>();
+        IKnockable knk = other.gameObject.GetComponent<IKnockable>();
 
         if (dmg != null)
         {
@@ -105,6 +106,13 @@ public class Bullet : MonoBehaviour, IDeflectable
             des.DestroyObj();
             ObjectPoolUtil.GetInstance().ReturnObj(this.gameObject);
         }
+
+        else if (knk != null)
+        {
+            isDeflecting = false;
+            knk.KnockDownObj(transform.position);
+            ObjectPoolUtil.GetInstance().ReturnObj(this.gameObject);
+        }
     }
 
     public void SetEnemyPos(Vector3 val)
@@ -116,11 +124,6 @@ public class Bullet : MonoBehaviour, IDeflectable
 
     public void Deflect(float angle)
     {
-        // if (slowDownCoroutine != null)
-        // {
-        //     StopCoroutine(slowDownCoroutine);
-        // }
-
         if (removeCoRoutine != null)
         {
             StopCoroutine(removeCoRoutine);
@@ -133,7 +136,6 @@ public class Bullet : MonoBehaviour, IDeflectable
 
         currentBulletSpeed = bulletSpeedDeflect;
         mesh.material.color = new Color(0.9245283f, 0.7159268f, 0.1788003f, 1);
-        // this.transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, angle, 0f), 1000 * Time.deltaTime);
 
         transform.eulerAngles = new Vector3(0, angle, 0);
     }

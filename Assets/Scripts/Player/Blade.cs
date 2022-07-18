@@ -41,16 +41,6 @@ public class Blade : MonoBehaviour
     internal void SetAngle(float val)
     {
         angleYAxis = val;
-
-        // if (angleYAxis > 0)
-        // {
-        //     weaponsGfx.transform.localEulerAngles = new Vector3(0, 15, 0);
-        // }
-
-        // else
-        // {
-        //     weaponsGfx.transform.localEulerAngles = new Vector3(0, -15, 0);
-        // }
     }
 
     void OnTriggerEnter(Collider other)

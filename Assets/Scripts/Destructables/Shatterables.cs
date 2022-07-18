@@ -25,7 +25,21 @@ public class Shatterables : DestructableObject, IDestructable
                 Rigidbody rb = pieces[i].AddComponent<Rigidbody>();
                 pieces[i].AddComponent<MeshCollider>().convex = true;
 
-                rb.AddForce(Vector3.forward * data.shatterForce * Time.fixedDeltaTime, ForceMode.Impulse);
+                int val = Random.Range(0, 3);
+
+                Vector3 forceVec = Vector3.zero;
+
+                if (val == 0)
+                    forceVec = Vector3.forward;
+
+                else if (val == 1)
+                    forceVec = Vector3.right;
+
+                else if (val == 2) ;
+                forceVec = Vector3.left;
+
+
+                rb.AddForce(forceVec * data.shatterForce * Time.fixedDeltaTime, ForceMode.Impulse);
             }
 
             genObjs--;

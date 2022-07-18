@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
         levelController = LevelController.GetInstance();
         objectPool = ObjectPoolUtil.GetInstance();
-        target = levelController.GetPlayerPos().position;
+        target = levelController.GetPlayer().GetFPSCam().transform.position;
 
         if (levelController.GetGameStartState())
             GameStart();
@@ -71,7 +71,6 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         InstantiateHealthBar();
         currentState = EnemyState.Initial;
-        //StartCoroutine(Shoot());
     }
 
     protected void PlayerDeadEvent()
@@ -86,25 +85,6 @@ public class Enemy : MonoBehaviour, IDamageable
         obj.transform.rotation = shootPoint.rotation;
         obj.GetComponent<Bullet>().SetEnemyPos(this.transform.position);
     }
-
-    // protected IEnumerator Shoot()
-    // {
-    //     InstantiateHealthBar();
-    //     yield return new WaitForSeconds(Random.Range(0.2f, 1f));
-
-    //     while (currentState != EnemyState.Dead && !isPlayerDead)
-    //     {
-    //         RotateGun();
-
-    //         GameObject obj = objectPool.GetObj(enemyData.bulletPrefab, null);
-    //         obj.transform.position = shootPoint.position;
-    //         obj.transform.rotation = shootPoint.rotation;
-    //         obj.GetComponent<Bullet>().SetEnemyPos(this.transform.position);
-    //         yield return new WaitForSeconds(Random.Range(enemyData.fireRateMin, enemyData.fireRateMax));
-    //     }
-    // }
-
-
 
     public void Damage(int amount)
     {

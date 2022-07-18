@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Slabs : KnockDownObjects
+public interface IKnockable
 {
-
+    public void KnockDownObj(Vector3 forcePosition);
 }
