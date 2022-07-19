@@ -12,7 +12,7 @@ public class KnockableObjects : MonoBehaviour
         IDamageable dmg = other.gameObject.GetComponent<IDamageable>();
         if (dmg != null)
         {
-            dmg.Damage(2);
+            dmg.Damage(2, transform.position);
         }
     }
 }

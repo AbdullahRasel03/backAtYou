@@ -18,7 +18,7 @@ public class Player : MonoBehaviour, IDamageable
         currentHealth = data.playerMaxHealth;
     }
 
-    public void Damage(int amount)
+    public void Damage(int amount, Vector3 hitPosition)
     {
         currentHealth -= amount;
         OnHealthChanged?.Invoke(currentHealth);

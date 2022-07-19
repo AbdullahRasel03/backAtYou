@@ -4,7 +4,20 @@ using UnityEngine;
 
 public class EnemyStatic : Enemy
 {
+    [SerializeField] protected Collider mainCollider;
     private float currentTime = 0f;
+
+    private Collider[] bodyColliders;
+    private Rigidbody[] bodyRigidBodies;
+
+    protected override void Start()
+    {
+        base.Start();
+        bodyColliders = GetComponentsInChildren<Collider>();
+        bodyRigidBodies = GetComponentsInChildren<Rigidbody>();
+        DeactiveRagDoll();
+    }
+
     protected override void CheckState()
     {
         switch (currentState)
@@ -45,8 +58,13 @@ public class EnemyStatic : Enemy
                 break;
 
             case EnemyState.Dead:
-                Destroy(instantiatedHealthBar.gameObject);
-                Destroy(this.gameObject);
+                if (instantiatedHealthBar != null)
+                    Destroy(instantiatedHealthBar.gameObject);
+
+                ActiveRagDoll();
+                break;
+
+            case EnemyState.End:
                 break;
         }
     }
@@ -56,31 +74,7 @@ public class EnemyStatic : Enemy
         // this.randomPlayerPos = new Vector3(Random.Range(target.x - enemyData.playerXBound, target.x + enemyData.playerXBound),
         // Random.Range(target.y - (enemyData.playerYBound - 0.3f), target.y + enemyData.playerYBound), target.z);
 
-        Vector3 dir = (target - gun.position).normalized;
-
-        float min = 0, max = 0;
-
-        if (dir.x > 0)
-        {
-            min = target.x - 0.15f;
-            max = target.x + dir.x + 0.15f;
-        }
-
-        else if (dir.x < 0)
-        {
-            min = target.x + dir.x - 0.15f;
-            max = target.x + 0.15f;
-        }
-
-        else
-        {
-            min = target.x - 0.25f;
-            max = target.x + 0.25f;
-        }
-
-        this.randomPlayerPos = new Vector3(Random.Range(min, max), Random.Range(target.y - 0.15f, target.y - 0.7f), target.z);
-
-
+        FindPlayerPosToLookAt();
 
         gun.rotation = Quaternion.LookRotation(randomPlayerPos - gun.position);
     }
@@ -96,6 +90,43 @@ public class EnemyStatic : Enemy
         instantiatedHealthBar = obj.GetComponent<EnemyHealthBar>();
         currentHealth = enemyData.maxHealth;
         instantiatedHealthBar.SetMaxHealth(enemyData.maxHealth);
+    }
+
+    private void ActiveRagDoll()
+    {
+        this.mainCollider.enabled = false;
+
+        Vector3 hitDirection = (transform.position - hitPosition).normalized;
+        hitDirection.y = 1f;
+
+        foreach (Collider collider in bodyColliders)
+        {
+            collider.enabled = true;
+        }
+
+        foreach (Rigidbody rb in bodyRigidBodies)
+        {
+            rb.isKinematic = false;
+
+            rb.AddForce(hitDirection * enemyData.deadKnockOutForce * Time.fixedDeltaTime, ForceMode.Impulse);
+        }
+
+        currentState = EnemyState.End;
+    }
+
+    private void DeactiveRagDoll()
+    {
+        mainCollider.enabled = true;
+
+        for (int i = 1; i < bodyColliders.Length; i++)
+        {
+            bodyColliders[i].enabled = false;
+        }
+
+        foreach (Rigidbody rb in bodyRigidBodies)
+        {
+            rb.isKinematic = true;
+        }
     }
 
 

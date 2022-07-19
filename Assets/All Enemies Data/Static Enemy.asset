@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Static Enemy
   m_EditorClassIdentifier: 
   enemyType: 0
-  playerYBound: 0.65
-  playerXBound: 0.2
   bulletPrefab: {fileID: 8478633935918518497, guid: d6dd1f35504cf4b17b9ebdbb3dbdc213,
     type: 3}
   healthBarPrefab: {fileID: 3258655375662541683, guid: 175aa87877cea4dff8fba38001c9e8d3,
@@ -22,5 +20,6 @@ MonoBehaviour:
   maxHealth: 2
   shootDelayMin: 2
   shootDelayMax: 4.5
+  deadKnockOutForce: 600
   movingSpeed: 0
   movingTime: 0

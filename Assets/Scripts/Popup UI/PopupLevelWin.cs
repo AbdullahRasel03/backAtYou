@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class PopupLevelWin : PopupBase
 {
-    public static event Action OnLevelWin;
     public static event Action OnNextLevelButtonClicked;
 
     public override void onDestroyView()
@@ -18,7 +17,6 @@ public class PopupLevelWin : PopupBase
 
     public override void OnShowView()
     {
-        OnLevelWin?.Invoke();
         PopupController.GetInstance().popupGamePanel.HideView();
     }
 

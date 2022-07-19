@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class LevelController : MonoBehaviour
 {
+    public static event Action OnLevelWin;
     public static LevelController instance;
 
     [SerializeField] private Player player;
@@ -56,9 +58,16 @@ public class LevelController : MonoBehaviour
 
             if (enemyList.Count == 0)
             {
-                PopupController.GetInstance().popupLevelWin.ShowView();
+                OnLevelWin?.Invoke();
+                StartCoroutine(GameOverDelay());
             }
         }
+    }
+
+    private IEnumerator GameOverDelay()
+    {
+        yield return new WaitForSeconds(1.5f);
+        PopupController.GetInstance().popupLevelWin.ShowView();
     }
 
     public void SetGameStartState()

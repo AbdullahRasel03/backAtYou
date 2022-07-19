@@ -40,7 +40,7 @@ public class Bullet : MonoBehaviour, IDeflectable
     void OnEnable()
     {
         Player.OnPlayerDead += HideBullet;
-        PopupLevelWin.OnLevelWin += HideBullet;
+        LevelController.OnLevelWin += HideBullet;
 
         currentBulletSpeed = bulletSpeedNormal;
         mesh.material.color = new Color(0.9245283f, 0.7159268f, 0.1788003f, 1);
@@ -50,7 +50,7 @@ public class Bullet : MonoBehaviour, IDeflectable
     void OnDisable()
     {
         Player.OnPlayerDead -= HideBullet;
-        PopupLevelWin.OnLevelWin -= HideBullet;
+        LevelController.OnLevelWin -= HideBullet;
     }
 
     private void HideBullet()
@@ -96,7 +96,7 @@ public class Bullet : MonoBehaviour, IDeflectable
         if (dmg != null)
         {
             isDeflecting = false;
-            dmg.Damage(1);
+            dmg.Damage(1, transform.position);
             ObjectPoolUtil.GetInstance().ReturnObj(this.gameObject);
         }
 

@@ -23,7 +23,7 @@ public class Explosives : DestructableObject, IDestructable
 
             if (damageable != null)
             {
-                damageable.Damage(data.damageDeal);
+                damageable.Damage(data.damageDeal, transform.position);
             }
         }
 

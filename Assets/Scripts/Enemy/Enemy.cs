@@ -14,8 +14,8 @@ public class Enemy : MonoBehaviour, IDamageable
     protected Vector3 target;
     protected Vector3 randomPlayerPos;
     protected Transform selfTransform;
-
     protected EnemyHealthBar instantiatedHealthBar;
+    protected Vector3 hitPosition;
 
     protected bool isPlayerDead;
     protected int currentHealth;
@@ -24,8 +24,12 @@ public class Enemy : MonoBehaviour, IDamageable
     protected EnemyState currentState;
 
     #region Unity Methods
-    void Start()
+
+    protected virtual void Start()
     {
+        levelController = LevelController.GetInstance();
+        objectPool = ObjectPoolUtil.GetInstance();
+
         isPlayerDead = false;
 
         shootStartTime = Time.time;
@@ -33,8 +37,7 @@ public class Enemy : MonoBehaviour, IDamageable
         selfTransform = this.transform;
         StopAllCoroutines();
 
-        levelController = LevelController.GetInstance();
-        objectPool = ObjectPoolUtil.GetInstance();
+
         target = levelController.GetPlayer().GetFPSCam().transform.position;
 
         if (levelController.GetGameStartState())
@@ -59,6 +62,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
     void Update()
     {
+        // Debug.Log(levelController);
         if (levelController.GetGameStartState() == false)
             return;
 
@@ -86,10 +90,11 @@ public class Enemy : MonoBehaviour, IDamageable
         obj.GetComponent<Bullet>().SetEnemyPos(this.transform.position);
     }
 
-    public void Damage(int amount)
+    public void Damage(int amount, Vector3 hitPos)
     {
         currentHealth -= amount;
         instantiatedHealthBar.ChangeHealth(currentHealth);
+        this.hitPosition = hitPos;
 
         if (currentHealth <= 0)
         {
@@ -98,9 +103,35 @@ public class Enemy : MonoBehaviour, IDamageable
         }
     }
 
+    protected void FindPlayerPosToLookAt()
+    {
+        Vector3 dir = (target - gun.position).normalized;
+
+        float min = 0, max = 0;
+
+        if (dir.x > 0)
+        {
+            min = target.x - 0.15f;
+            max = target.x + dir.x + 0.15f;
+        }
+
+        else if (dir.x < 0)
+        {
+            min = target.x + dir.x - 0.15f;
+            max = target.x + 0.15f;
+        }
+
+        else
+        {
+            min = target.x - 0.25f;
+            max = target.x + 0.25f;
+        }
+
+        this.randomPlayerPos = new Vector3(Random.Range(min, max), Random.Range(target.y - 0.15f, target.y - 0.7f), target.z);
+    }
+
     protected virtual void CheckState() { }
     protected virtual void RotateGun() { }
-
     protected virtual void InstantiateHealthBar() { }
 }
 
@@ -111,5 +142,6 @@ public enum EnemyState
     Idle,
     Shoot,
     Moving,
-    Dead
+    Dead,
+    End
 }

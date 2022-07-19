@@ -10,6 +10,11 @@ public class EnemyMoving : Enemy
     private float currentTime = 0f;
 
     private bool canShootWhileWaiting = true;
+
+    protected override void Start()
+    {
+        base.Start();
+    }
     protected override void CheckState()
     {
         switch (currentState)
@@ -21,8 +26,10 @@ public class EnemyMoving : Enemy
                 if (currentTime >= Random.Range(0.5f, 1.5f))
                 {
                     currentTime = 0f;
-                    this.randomPlayerPos = new Vector3(Random.Range(target.x - enemyData.playerXBound, target.x + enemyData.playerXBound),
-                                            Random.Range(target.y - (enemyData.playerYBound - 0.3f), target.y + enemyData.playerYBound), target.z);
+                    //this.randomPlayerPos = new Vector3(Random.Range(target.x - enemyData.playerXBound, target.x + enemyData.playerXBound),
+                    // Random.Range(target.y - (enemyData.playerYBound - 0.3f), target.y + enemyData.playerYBound), target.z);
+
+                    FindPlayerPosToLookAt();
 
                     transform.rotation = Quaternion.LookRotation(randomPlayerPos - transform.position);
                     Shoot();
@@ -106,8 +113,10 @@ public class EnemyMoving : Enemy
         WaitForSeconds delay = new WaitForSeconds(0.01f);
 
 
-        this.randomPlayerPos = new Vector3(Random.Range(target.x - enemyData.playerXBound, target.x + enemyData.playerXBound),
-        Random.Range(target.y - (enemyData.playerYBound - 0.3f), target.y + enemyData.playerYBound), target.z);
+        //this.randomPlayerPos = new Vector3(Random.Range(target.x - enemyData.playerXBound, target.x + enemyData.playerXBound),
+        //Random.Range(target.y - (enemyData.playerYBound - 0.3f), target.y + enemyData.playerYBound), target.z);
+
+        FindPlayerPosToLookAt();
 
         Quaternion targetRotation = Quaternion.LookRotation(randomPlayerPos - transform.position);
 
