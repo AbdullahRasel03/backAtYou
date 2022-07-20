@@ -32,7 +32,7 @@ public class Explosives : DestructableObject, IDestructable
 
     private IEnumerator Explode()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         Destroy(this.gameObject);
     }
 
