@@ -24,7 +24,7 @@ public class Player : MonoBehaviour, IDamageable
         currentHealth -= amount;
         OnHealthChanged?.Invoke(currentHealth);
 
-        playerHitMat.SetFloat("_FullScreenIntensity", 0.4f);
+        playerHitMat.SetFloat("_FullScreenIntensity", 0.3f);
 
         if (hitEffectCoroutine != null)
         {
@@ -49,7 +49,7 @@ public class Player : MonoBehaviour, IDamageable
         while (playerHitMat.GetFloat("_FullScreenIntensity") != 0f)
         {
             val -= Time.deltaTime * 0.6f;
-            val = Mathf.Clamp(val, 0f, 0.4f);
+            val = Mathf.Clamp(val, 0f, 0.3f);
             playerHitMat.SetFloat("_FullScreenIntensity", val);
 
             yield return null;
