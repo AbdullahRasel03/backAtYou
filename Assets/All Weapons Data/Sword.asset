@@ -16,5 +16,5 @@ MonoBehaviour:
   weaponPrice: 100
   weaponGFX: {fileID: 6506963976923741885, guid: 8caad1242a6ac4cdbb0df82daa7b6d33,
     type: 3}
-  weaponImage: {fileID: 21300000, guid: 169d45648e00348038299fc345aa6b4f, type: 3}
-  buttonState: 0
+  weaponImage: {fileID: 21300000, guid: 79c7bf90b60e0467bb08c4d2b51cb732, type: 3}
+  buttonState: 2

@@ -24,8 +24,8 @@ public class Blade : MonoBehaviour
 
     private void WeaponInstantiated()
     {
-        trailEffect = GetComponentInChildren<TrailRenderer>();
         weaponsGfx = transform.GetChild(1).gameObject;
+        trailEffect = weaponsGfx.transform.GetChild(0).transform.GetChild(0).transform.GetComponentInChildren<TrailRenderer>();
     }
 
 
