@@ -33,7 +33,10 @@ public class LevelController : MonoBehaviour
 
     }
 
+    void Start()
+    {
 
+    }
 
     public static LevelController GetInstance()
     {
@@ -64,12 +67,6 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    private IEnumerator GameOverDelay()
-    {
-        yield return new WaitForSeconds(1.5f);
-        PopupController.GetInstance().popupLevelWin.ShowView();
-    }
-
     public void SetGameStartState()
     {
         isGameStarted = true;
@@ -80,5 +77,9 @@ public class LevelController : MonoBehaviour
         return isGameStarted;
     }
 
-
+    private IEnumerator GameOverDelay()
+    {
+        yield return new WaitForSeconds(1.5f);
+        PopupController.GetInstance().popupLevelWin.ShowView();
+    }
 }

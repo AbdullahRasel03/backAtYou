@@ -9,6 +9,7 @@ public class PopupController : MonoBehaviour
     public PopupLevelLost popupLevelLost;
     public PopupMainMenu popupMainMenu;
     public PopupGamePanel popupGamePanel;
+    public PopupShopPanel popupShopPanel;
     private Stack<IDeviceBackButtonInterface> allPopups;
 
 

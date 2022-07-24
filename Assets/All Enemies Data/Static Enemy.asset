@@ -18,8 +18,8 @@ MonoBehaviour:
   healthBarPrefab: {fileID: 3258655375662541683, guid: 175aa87877cea4dff8fba38001c9e8d3,
     type: 3}
   maxHealth: 2
-  shootDelayMin: 2
-  shootDelayMax: 4.5
+  shootDelayMin: 0.8
+  shootDelayMax: 3.2
   deadKnockOutForce: 600
   movingSpeed: 0
   movingTime: 0

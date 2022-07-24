@@ -53,9 +53,7 @@ public class SwipeController : MonoBehaviour
         {
             blade.transform.rotation = Quaternion.Euler(180f, 0f, 0f);
             this.touchStartPos = Input.mousePosition;
-            blade.MakeTrailEffectOnOrOff(true);
-            blade.MakeColliderOnOrOff(true);
-            blade.MakeWeaponGfxOnOrOff(true);
+
             isSlicing = true;
 
             Quaternion rotation = Quaternion.LookRotation(-transform.forward, Input.mousePosition.normalized);
@@ -72,10 +70,17 @@ public class SwipeController : MonoBehaviour
 
             // float dirX = Input.mousePosition.x - touchStartPos.x;
             // SetAngle(Input.mousePosition, dirX);
+
+            Quaternion rotation = Quaternion.LookRotation(-transform.forward, (Input.mousePosition - touchStartPos).normalized);
+            blade.transform.rotation = rotation;
         }
 
         if (isSlicing)
         {
+            blade.MakeTrailEffectOnOrOff(true);
+            blade.MakeColliderOnOrOff(true);
+            blade.MakeWeaponGfxOnOrOff(true);
+
             float dirX = Input.mousePosition.x - touchStartPos.x;
             SetAngle(Input.mousePosition, dirX);
             blade.SetTrailPos();
@@ -87,18 +92,6 @@ public class SwipeController : MonoBehaviour
 
     private void SetAngle(Vector3 currentTouchPos, float directionX)
     {
-
-        // float yAngle = Vector3.Angle(Vector3.down, touchStartPos - currentTouchPos);
-
-        // if (directionX > 0)
-        // {
-        //     blade.SetAngle(yAngle);
-        // }
-
-        // else
-        // {
-        //     blade.SetAngle(-yAngle);
-        // }
 
         Vector2 direction = currentTouchPos - touchStartPos;
         //Debug.LogError("direction: " + direction);

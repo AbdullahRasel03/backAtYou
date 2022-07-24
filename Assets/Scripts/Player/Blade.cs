@@ -14,6 +14,18 @@ public class Blade : MonoBehaviour
     void OnEnable()
     {
         col.enabled = false;
+        InventoryController.OnWeaponIntantiated += WeaponInstantiated;
+    }
+
+    void OnDisable()
+    {
+        InventoryController.OnWeaponIntantiated -= WeaponInstantiated;
+    }
+
+    private void WeaponInstantiated()
+    {
+        trailEffect = GetComponentInChildren<TrailRenderer>();
+        weaponsGfx = transform.GetChild(1).gameObject;
     }
 
 
@@ -25,7 +37,8 @@ public class Blade : MonoBehaviour
 
     internal void MakeTrailEffectOnOrOff(bool val)
     {
-        trailEffect.enabled = val;
+        if (trailEffect != null)
+            trailEffect.enabled = val;
     }
 
     internal void MakeColliderOnOrOff(bool val)
@@ -35,7 +48,8 @@ public class Blade : MonoBehaviour
 
     internal void MakeWeaponGfxOnOrOff(bool val)
     {
-        weaponsGfx.SetActive(val);
+        if (weaponsGfx != null)
+            weaponsGfx.SetActive(val);
     }
 
     internal void SetAngle(float val)

@@ -6,5 +6,5 @@ using UnityEngine;
 public class PlayerData : ScriptableObject
 {
     public int playerMaxHealth;
-
+    public int coins;
 }
