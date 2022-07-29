@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1541281377682346244}
   - component: {fileID: 5610552282446259039}
   - component: {fileID: 5192748423098759818}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ShellRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 3824169625157651397}
   - component: {fileID: 7590684202694024333}
   - component: {fileID: 4644920359341437505}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ShellLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,13 +177,13 @@ GameObject:
   - component: {fileID: 4497709377164245918}
   - component: {fileID: 3081482011267185784}
   - component: {fileID: 4170803451832048754}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FlyingBot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4497709377164245918
 Transform:
   m_ObjectHideFlags: 0
@@ -192,7 +192,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3828273494695682340}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.22, y: -0.12, z: 18.29}
+  m_LocalPosition: {x: 0, y: -1, z: 18.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 5150280295657630612}
   - component: {fileID: 7295842612348994136}
   - component: {fileID: 113180540752484776}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Nozle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4170803451880973391}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shoot Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -362,7 +362,7 @@ GameObject:
   - component: {fileID: 4243486528908728278}
   - component: {fileID: 1184926960256365048}
   - component: {fileID: 1716508271769042590}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}

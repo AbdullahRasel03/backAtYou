@@ -15,50 +15,27 @@ public class SwipeController : MonoBehaviour
 
     private Vector3 touchStartPos = Vector3.zero;
 
+    private Vector3 prevTouchPos = Vector3.zero;
+
     private bool canStartSwipe = false;
 
     private bool isSlicing = false;
 
     private Vector3 playerPos;
 
-    // void OnEnable()
-    // {
-    //     LevelGenerator.OnLevelGenerated += CanStartSwipe;
-    //     PopupLevelLost.OnRestartlButtonClicked += CanStartSwipe;
-    //     PopupLevelWin.OnNextLevelButtonClicked += CanStartSwipe;
-    // }
-
-    // void OnDisable()
-    // {
-    //     LevelGenerator.OnLevelGenerated -= CanStartSwipe;
-    //     PopupLevelLost.OnRestartlButtonClicked -= CanStartSwipe;
-    //     PopupLevelWin.OnNextLevelButtonClicked -= CanStartSwipe;
-    // }
-
-    void Start()
-    {
-
-    }
-
-    void CanStartSwipe()
-    {
-        canStartSwipe = !canStartSwipe;
-    }
     void Update()
     {
-        // if (!canStartSwipe)
-        //     return;
-
         if (Input.GetMouseButtonDown(0))
         {
             blade.transform.rotation = Quaternion.Euler(180f, 0f, 0f);
             this.touchStartPos = Input.mousePosition;
+            //prevTouchPos = touchStartPos;
 
             isSlicing = true;
 
-            Quaternion rotation = Quaternion.LookRotation(-transform.forward, Input.mousePosition.normalized);
+            Quaternion rotation = Quaternion.LookRotation(-transform.forward, touchStartPos.normalized);
 
-            blade.transform.rotation = Quaternion.Euler(rotation.x, (Input.mousePosition.x > 0) ? 45f : -45f, rotation.z);
+            blade.transform.rotation = Quaternion.Euler(rotation.x, (touchStartPos.x > 0) ? 45f : -45f, rotation.z);
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -68,15 +45,24 @@ public class SwipeController : MonoBehaviour
             blade.MakeWeaponGfxOnOrOff(false);
             isSlicing = false;
 
-            // float dirX = Input.mousePosition.x - touchStartPos.x;
-            // SetAngle(Input.mousePosition, dirX);
+            float dirX = Input.mousePosition.x - touchStartPos.x;
+            SetAngle(Input.mousePosition, dirX);
+            blade.SetTrailPos();
 
-            Quaternion rotation = Quaternion.LookRotation(-transform.forward, (Input.mousePosition - touchStartPos).normalized);
-            blade.transform.rotation = rotation;
+
+            // Quaternion rotation = Quaternion.LookRotation(-transform.forward, (Input.mousePosition - touchStartPos).normalized);
+            // blade.transform.rotation = rotation;
         }
 
         if (isSlicing)
         {
+
+            // if (prevTouchPos == Input.mousePosition)
+            // {
+            //     touchStartPos = Input.mousePosition;
+            // }
+
+
             blade.MakeTrailEffectOnOrOff(true);
             blade.MakeColliderOnOrOff(true);
             blade.MakeWeaponGfxOnOrOff(true);
@@ -87,6 +73,9 @@ public class SwipeController : MonoBehaviour
 
             Quaternion rotation = Quaternion.LookRotation(-transform.forward, (Input.mousePosition - touchStartPos).normalized);
             blade.transform.rotation = Quaternion.Slerp(blade.transform.rotation, rotation, 100 * Time.deltaTime);
+
+
+            //prevTouchPos = Input.mousePosition;
         }
     }
 

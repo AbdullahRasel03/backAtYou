@@ -53,6 +53,12 @@ public class LevelController : MonoBehaviour
         return player;
     }
 
+    public int GetEnemyCount()
+    {
+        return enemyList.Count;
+    }
+
+
     public void RemoveEnemy()
     {
         if (enemyList.Count > 0)

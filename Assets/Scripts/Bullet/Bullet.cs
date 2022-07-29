@@ -5,25 +5,18 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour, IDeflectable
 {
-    [SerializeField] private float bulletSpeedNormal = 10f;
-    [SerializeField] private float bulletSpeedSlow = 1f;
-    [SerializeField] private float bulletSpeedDeflect;
-    [SerializeField] private float slowDownTime = 5f;
+    [SerializeField] private BulletData bulletData;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private MeshRenderer mesh;
-
     private float currentBulletSpeed;
-
-    private Vector3 movement = Vector3.zero;
-
-    private LevelController levelController;
-    private Vector3 playerPos;
-
-    private Vector3 enemeyPos;
-
     private bool isDeflecting;
-
+    private LevelController levelController;
+    private Vector3 movement = Vector3.zero;
+    private Vector3 playerPos;
+    private Vector3 enemeyPos;
     private IEnumerator removeCoRoutine;
+
+    public static event Action<GameObject, GameObject> OnSlowMotionStarted;
 
     void Start()
     {
@@ -42,7 +35,7 @@ public class Bullet : MonoBehaviour, IDeflectable
         Player.OnPlayerDead += HideBullet;
         LevelController.OnLevelWin += HideBullet;
 
-        currentBulletSpeed = bulletSpeedNormal;
+        currentBulletSpeed = bulletData.bulletSpeedNormal;
         mesh.material.color = new Color(0.9245283f, 0.7159268f, 0.1788003f, 1);
         isDeflecting = false;
     }
@@ -74,13 +67,13 @@ public class Bullet : MonoBehaviour, IDeflectable
 
         if (distanceZ <= 3.25f && distanceZ >= 2.1f && !isDeflecting)
         {
-            currentBulletSpeed = bulletSpeedSlow;
+            currentBulletSpeed = bulletData.bulletSpeedSlow;
             mesh.material.color = Color.red;
         }
 
         else if (isDeflecting || (distanceZ > 3.25f || distanceZ < 2.1f))
         {
-            currentBulletSpeed = bulletSpeedNormal;
+            currentBulletSpeed = bulletData.bulletSpeedNormal;
             mesh.material.color = new Color(0.9245283f, 0.7159268f, 0.1788003f, 1);
         }
 
@@ -96,7 +89,7 @@ public class Bullet : MonoBehaviour, IDeflectable
         if (dmg != null)
         {
             isDeflecting = false;
-            dmg.Damage(1, transform.position);
+            dmg.Damage(bulletData.damage, transform.position);
             ObjectPoolUtil.GetInstance().ReturnObj(this.gameObject);
         }
 
@@ -120,8 +113,6 @@ public class Bullet : MonoBehaviour, IDeflectable
         enemeyPos = val;
     }
 
-
-
     public void Deflect(float angle)
     {
         if (removeCoRoutine != null)
@@ -134,9 +125,28 @@ public class Bullet : MonoBehaviour, IDeflectable
 
         isDeflecting = true;
 
-        currentBulletSpeed = bulletSpeedDeflect;
+        currentBulletSpeed = bulletData.bulletSpeedDeflect;
         mesh.material.color = new Color(0.9245283f, 0.7159268f, 0.1788003f, 1);
 
         transform.eulerAngles = new Vector3(0, angle, 0);
+
+        if (levelController.GetEnemyCount() == 1)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 30, bulletData.layerMask))
+            {
+                Enemy enemy = hit.transform.GetComponent<Enemy>();
+
+                if (enemy.GetCurrentHealth() <= bulletData.damage)
+                {
+                    OnSlowMotionStarted.Invoke(this.gameObject, enemy.gameObject);
+                }
+            }
+        }
+
+
+
+
     }
 }

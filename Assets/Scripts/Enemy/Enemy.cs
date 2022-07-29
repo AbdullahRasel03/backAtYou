@@ -71,6 +71,11 @@ public class Enemy : MonoBehaviour, IDamageable
 
     #endregion
 
+    public int GetCurrentHealth()
+    {
+        return this.currentHealth;
+    }
+
     protected void GameStart()
     {
         InstantiateHealthBar();

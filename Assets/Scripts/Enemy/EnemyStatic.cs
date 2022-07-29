@@ -61,6 +61,7 @@ public class EnemyStatic : Enemy
                 if (instantiatedHealthBar != null)
                     Destroy(instantiatedHealthBar.gameObject);
 
+                Destroy(mainCollider);
                 ActiveRagDoll();
                 break;
 
@@ -94,8 +95,6 @@ public class EnemyStatic : Enemy
 
     private void ActiveRagDoll()
     {
-        this.mainCollider.enabled = false;
-
         Vector3 hitDirection = (transform.position - hitPosition).normalized;
         hitDirection.y = 1f;
 

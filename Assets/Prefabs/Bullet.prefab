@@ -127,9 +127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aa6ed2e32e5e47fdb5bac56abab98b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpeedNormal: 700
-  bulletSpeedSlow: 15
-  bulletSpeedDeflect: 2500
-  slowDownTime: 3.5
+  bulletData: {fileID: 11400000, guid: 9b48438e46eac417ba93f66bd09a4412, type: 2}
   rb: {fileID: 3839297779781346818}
   mesh: {fileID: 8478633935918518503}
